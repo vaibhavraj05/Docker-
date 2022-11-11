@@ -7,8 +7,8 @@ copy package.json /app
 run npm install
 
 copy . /app
-
-ENV PORT 80
+ARG DPORT=80
+ENV PORT $DPORT
 Expose $PORT
 
 cmd ["node","server.js"]
