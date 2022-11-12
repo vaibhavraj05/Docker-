@@ -1,0 +1,37 @@
+version: '3.8'
+
+#bydefault yaml file is --rm mode 
+services:
+  mongodb:
+    image: 'mongo'
+    volumes:
+      - database:/data/db
+    #env_file: if we are having any file to add [secutiy purpose]
+    #  - fileName
+    container_name: 'mongodb'
+  backend:
+    build : ./backend
+    container_name: 'backend'
+    ports:
+      - "80:80"
+    volumes:
+      - logs:/app/logs
+      - ./backend:/app
+      - /app/node_modules
+    # we use depends on when our container is depened on other contaiern so if other container is ready then it willl create this one
+    depends_on : 
+      - mongodb
+  frontend:
+    build: ./frontend
+    container_name: "frontend"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    
+
+volumes:
+  database:
+  logs:
+    
